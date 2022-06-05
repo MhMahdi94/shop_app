@@ -17,15 +17,17 @@ class FavouritesScreen extends StatelessWidget {
       builder: (context, state) {
         AppCubit cubit = AppCubit.get(context);
         return Scaffold(
-          appBar: AppBar(),
           body: state is! AppGetFavouritesLoadingState
               ? ListView.separated(
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return buildFavouriteItem(
-                      cubit.favouritesModel!.data!.data![index].product!,
-                      context,
-                    );
+                    return cubit.favouritesModel!.data!.data![index].product! !=
+                            null
+                        ? buildFavouriteItem(
+                            cubit.favouritesModel!.data!.data![index].product!,
+                            context,
+                          )
+                        : Text('sssss');
                   },
                   separatorBuilder: (context, index) => Divider(),
                   itemCount: cubit.favouritesModel!.data!.data!.length,

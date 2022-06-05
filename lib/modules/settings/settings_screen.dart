@@ -33,7 +33,7 @@ class SettingsScreen extends StatelessWidget {
                     children: [
                       Center(
                         child: Padding(
-                          padding: EdgeInsets.all(8.r),
+                          padding: EdgeInsets.all(16.r),
                           child: Column(
                             children: [
                               CircleAvatar(
@@ -71,6 +71,16 @@ class SettingsScreen extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: 16.h),
+                              Padding(
+                                padding: EdgeInsets.all(16.sp),
+                                child: defaultButton(
+                                  function: () {
+                                    signOut(context);
+                                  },
+                                  text: 'Logout',
+                                  background: mainColor,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -93,16 +103,6 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              Padding(
-                padding: EdgeInsets.all(16.sp),
-                child: defaultButton(
-                  function: () {
-                    signOut(context);
-                  },
-                  text: 'Logout',
-                  background: mainColor,
-                ),
-              ),
             ],
           );
         },

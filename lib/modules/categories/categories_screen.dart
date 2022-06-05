@@ -15,7 +15,6 @@ class CategoriesScreen extends StatelessWidget {
     return BlocConsumer<AppCubit, AppState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(),
           body: Padding(
             padding: EdgeInsets.all(16.r),
             child: GridView.count(
@@ -65,9 +64,10 @@ class CategoriesScreen extends StatelessWidget {
                 image: NetworkImage(
                   model!.image.toString(),
                 ),
-                width: 120.w,
-                height: 120.h,
+                width: 100.w,
+                height: 100.h,
               ),
+              Spacer(),
               Container(
                 width: double.infinity,
                 color: Colors.black26,

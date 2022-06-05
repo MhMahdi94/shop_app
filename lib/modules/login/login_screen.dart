@@ -60,135 +60,144 @@ class LoginScreen extends StatelessWidget {
         },
         builder: (context, state) {
           AppLoginCubit cubit = AppLoginCubit.get(context);
-          return Scaffold(
-            //appBar: AppBar(),
-            body: Stack(
-              // ignore: prefer_const_literals_to_create_immutables
-              children: [
-                Positioned(
-                  top: -75.h,
-                  left: -60.w,
-                  child: Image(
+          return SafeArea(
+            child: Scaffold(
+              //appBar: AppBar(),
+              body: Stack(
+                // ignore: prefer_const_literals_to_create_immutables
+                children: [
+                  Container(
                     width: MediaQuery.of(context).size.width,
-                    image: AssetImage('assets/images/background.png'),
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-                Positioned(
-                  top: 200.h,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        Image(
-                          image: AssetImage('assets/images/onBoard1.png'),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(16.r),
-                          child: Card(
-                            elevation: 10,
-                            child: Padding(
-                              padding: EdgeInsets.all(10.r),
-                              child: Form(
-                                key: formKey,
-                                child: Column(
-                                  children: [
-                                    //Email
-                                    defaultFormField(
-                                      controller: emailController,
-                                      type: TextInputType.emailAddress,
-                                      validate: (String? value) {
-                                        if (value!.isEmpty) {
-                                          return 'Email Address is required';
-                                        }
-                                        return null;
-                                      },
-                                      label: 'Email Address',
-                                      prefix: Icons.email_outlined,
-                                    ),
-                                    SizedBox(
-                                      height: 8.h,
-                                    ),
-                                    //Password
-                                    defaultFormField(
-                                      controller: passwordController,
-                                      isPassword: true,
-                                      type: TextInputType.visiblePassword,
-                                      validate: (String? value) {
-                                        if (value!.isEmpty) {
-                                          return 'Password is required';
-                                        }
-                                        return null;
-                                      },
-                                      label: 'Password',
-                                      prefix: Icons.lock_outline,
-                                    ),
-                                    SizedBox(
-                                      height: 4.h,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        defaultTextButton(
-                                            onPressed: () {},
-                                            label: 'Forgot Password?'),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    if (state is AppLoginLoadingState)
-                                      CircularProgressIndicator(),
-                                    if (state is! AppLoginLoadingState)
-                                      defaultButton(
-                                        function: () {
-                                          if (formKey.currentState!
-                                              .validate()) {
-                                            print('waiting for response ...');
-                                            cubit.userLogin(
-                                              email: emailController.text,
-                                              password: passwordController.text,
-                                            );
+                    child: SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          SizedBox(
+                            height: 150.h,
+                          ),
+                          Image(
+                            image: AssetImage('assets/images/onBoard1.png'),
+                            height: 150.h,
+                            width: 150.w,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(16.r),
+                            child: Card(
+                              elevation: 10,
+                              child: Padding(
+                                padding: EdgeInsets.all(10.r),
+                                child: Form(
+                                  key: formKey,
+                                  child: Column(
+                                    children: [
+                                      //Email
+                                      defaultFormField(
+                                        controller: emailController,
+                                        type: TextInputType.emailAddress,
+                                        validate: (String? value) {
+                                          if (value!.isEmpty) {
+                                            return 'Email Address is required';
                                           }
+                                          return null;
                                         },
-                                        text: 'Login',
-                                        background: mainColor,
-                                        radius: 20.r,
+                                        label: 'Email Address',
+                                        prefix: Icons.email_outlined,
                                       ),
-                                  ],
+                                      SizedBox(
+                                        height: 8.h,
+                                      ),
+                                      //Password
+                                      defaultFormField(
+                                        controller: passwordController,
+                                        isPassword: true,
+                                        type: TextInputType.visiblePassword,
+                                        validate: (String? value) {
+                                          if (value!.isEmpty) {
+                                            return 'Password is required';
+                                          }
+                                          return null;
+                                        },
+                                        label: 'Password',
+                                        prefix: Icons.lock_outline,
+                                      ),
+                                      SizedBox(
+                                        height: 1.h,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          defaultTextButton(
+                                              onPressed: () {},
+                                              label: 'Forgot Password?'),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 16.h,
+                                      ),
+                                      if (state is AppLoginLoadingState)
+                                        CircularProgressIndicator(),
+                                      if (state is! AppLoginLoadingState)
+                                        defaultButton(
+                                          function: () {
+                                            if (formKey.currentState!
+                                                .validate()) {
+                                              print('waiting for response ...');
+                                              cubit.userLogin(
+                                                email: emailController.text,
+                                                password:
+                                                    passwordController.text,
+                                              );
+                                            }
+                                          },
+                                          text: 'Login',
+                                          background: mainColor,
+                                          radius: 10.r,
+                                        ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(20.r),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                'Don’t have any account yet?',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
+                          Padding(
+                            padding: EdgeInsets.all(20.r),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'Don’t have any account yet?',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              defaultTextButton(
-                                onPressed: () {
-                                  navigateTo(context, RegisterScreen());
-                                },
-                                label: 'Register',
-                              )
-                            ],
-                          ),
-                        )
-                      ],
+                                defaultTextButton(
+                                  onPressed: () {
+                                    navigateTo(context, RegisterScreen());
+                                  },
+                                  label: 'Register',
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  Positioned(
+                    top: -75.h,
+                    left: -60.w,
+                    child: Image(
+                      width: MediaQuery.of(context).size.width,
+                      image: AssetImage('assets/images/background.png'),
+                      fit: BoxFit.fitWidth,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
