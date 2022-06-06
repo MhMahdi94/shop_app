@@ -4,8 +4,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/home_model.dart';
+import 'package:shop_app/modules/product_details/product_details.dart';
 import 'package:shop_app/shared/colors.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/cubit/cubit.dart';
@@ -27,7 +29,32 @@ class ProductsScreen extends StatelessWidget {
                 ),
         );
       },
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is AppChangeFavouritesSuccessState ||
+            state is AppAddToCartSuccessState) {
+          Fluttertoast.showToast(
+            msg: "Done Successfully",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: mainColor,
+            textColor: Colors.white,
+            fontSize: 12.0.sp,
+          );
+        }
+
+        if (state is AppChangeFavouritesFailureState) {
+          Fluttertoast.showToast(
+            msg: "Deleted Successfully",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: mainColor,
+            textColor: Colors.red,
+            fontSize: 12.0.sp,
+          );
+        }
+      },
     );
   }
 
@@ -134,37 +161,43 @@ class ProductsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              alignment: Alignment.bottomLeft,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black12,
-                    ),
-                  ),
-                  padding: EdgeInsets.all(8.r),
-                  child: Image(
-                    image: NetworkImage(
-                      model.image.toString(),
-                    ),
-                    height: 120.h,
-                    width: double.infinity,
-                  ),
-                ),
-                if (model.discount != 0)
+            InkWell(
+              onTap: () {
+                AppCubit.get(context).getProductDetailsData(model.id!);
+                navigateTo(context, ProductDetailsScreen());
+              },
+              child: Stack(
+                alignment: Alignment.bottomLeft,
+                children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4.w),
-                    color: Colors.red,
-                    child: Text(
-                      'DISCOUNT',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12.sp,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black12,
                       ),
                     ),
+                    padding: EdgeInsets.all(8.r),
+                    child: Image(
+                      image: NetworkImage(
+                        model.image.toString(),
+                      ),
+                      height: 120.h,
+                      width: double.infinity,
+                    ),
                   ),
-              ],
+                  if (model.discount != 0)
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      color: Colors.red,
+                      child: Text(
+                        'DISCOUNT',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
             SizedBox(
               height: 2.h,
@@ -230,7 +263,9 @@ class ProductsScreen extends StatelessWidget {
                     ],
                   ),
                   defaultButton(
-                    function: () {},
+                    function: () {
+                      AppCubit.get(context).addToCart(model.id!);
+                    },
                     text: 'Add To Cart',
                     background: mainColor,
                   )

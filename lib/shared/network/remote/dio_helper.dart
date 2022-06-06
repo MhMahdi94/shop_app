@@ -41,6 +41,7 @@ class DioHelper {
       'Content-Type': 'application/json',
       'Authorization': token,
     };
+
     return await dio!.post(
       url,
       queryParameters: queryParameters,
@@ -63,6 +64,25 @@ class DioHelper {
     print('data ${data}');
     print('token ${token}');
     return await dio!.put(
+      url,
+      //queryParameters: queryParameters,
+      data: data,
+    );
+  }
+
+  static Future<Response> deleteData({
+    required String url,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? data,
+    String lang = "en",
+    String? token,
+  }) async {
+    dio!.options.headers = {
+      'lang': lang,
+      'Content-Type': 'application/json',
+      'Authorization': token,
+    };
+    return await dio!.delete(
       url,
       //queryParameters: queryParameters,
       data: data,

@@ -2,8 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shop_app/modules/carts/carts_screen.dart';
 import 'package:shop_app/modules/login/login_screen.dart';
 import 'package:shop_app/modules/search/search_screen.dart';
+import 'package:shop_app/shared/colors.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/constants.dart';
 import 'package:shop_app/shared/cubit/cubit.dart';
@@ -27,13 +30,44 @@ class HomeLayout extends StatelessWidget {
                 onPressed: () {
                   navigateTo(context, SearchScreen());
                 },
-                icon: Icon(Icons.search_outlined),
+                icon: Icon(
+                  Icons.search_outlined,
+                  size: 22.sp,
+                ),
               ),
-              IconButton(
-                onPressed: () {
-                  navigateTo(context, SearchScreen());
-                },
-                icon: Icon(Icons.shopping_cart_outlined),
+              Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      navigateTo(context, CartsScreen());
+                    },
+                    icon: Icon(
+                      Icons.shopping_cart_outlined,
+                      size: 22.sp,
+                    ),
+                  ),
+                  Container(
+                    width: 15.w,
+                    height: 15.h,
+                    decoration: BoxDecoration(
+                      color: mainColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        cubit.cartModel == null
+                            ? '0'
+                            : cubit.cartModel!.data!.cartItems!.length
+                                .toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10.sp,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ],
           ),

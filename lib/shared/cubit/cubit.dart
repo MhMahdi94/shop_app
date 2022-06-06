@@ -1,10 +1,14 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/models/cart_model.dart';
 import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/change_favourites_model.dart';
 import 'package:shop_app/models/favourites_model.dart';
 import 'package:shop_app/models/home_model.dart';
 import 'package:shop_app/models/login_model.dart';
+import 'package:shop_app/models/product_detaild_model.dart';
 import 'package:shop_app/modules/categories/categories_screen.dart';
 import 'package:shop_app/modules/favourites/favourites.dart';
 import 'package:shop_app/modules/products/products_screen.dart';
@@ -164,5 +168,88 @@ class AppCubit extends Cubit<AppState> {
       print('error:${error.toString()}');
       emit(AppUpdateProfileFailureState());
     });
+  }
+
+  ProductDetailsModel? productDetailsModel;
+  void getProductDetailsData(int id) {
+    emit(AppGetProductDetailsLoadingState());
+    DioHelper.getData(
+      url: '$GET_PRODUCT$id',
+      token: token,
+    ).then((value) {
+      productDetailsModel = ProductDetailsModel.fromJson(value.data);
+      print(value.data);
+      emit(AppGetProductDetailsSuccessState());
+    }).catchError((error) {
+      print('error:${error.toString()}');
+      emit(AppGetProductDetailsFailureState());
+    });
+  }
+
+  CartModel? cartModel;
+  void addToCart(int productId) {
+    emit(AppAddToCartLoadingState());
+    DioHelper.postData(
+      url: CARTS,
+      token: token,
+      data: {'product_id': productId},
+    ).then((value) {
+      //printFullText(value.data);
+      //cartModel = CartModel.fromJson(value.data);
+      //print('data: ${data}');
+      emit(AppAddToCartSuccessState());
+
+      getCartData();
+    }).catchError((error) {
+      print('error:${error.toString()}');
+      emit(AppAddToCartFailureState());
+    });
+  }
+
+  void getCartData() {
+    emit(AppGetCartDataLoadingState());
+    DioHelper.getData(
+      url: CARTS,
+      token: token,
+    ).then((value) {
+      cartModel = CartModel.fromJson(value.data);
+      //print(value.data);
+      emit(AppGetCartDataSuccessState());
+    }).catchError((error) {
+      print('error:${error.toString()}');
+      emit(AppGetCartDataFailureState());
+    });
+  }
+
+  void deleteFromCart(int cartItemId) {
+    emit(AppDeleteCartDataLoadingState());
+    DioHelper.deleteData(
+      url: '$CARTS/$cartItemId',
+      token: token,
+    ).then((value) {
+      //cartModel = CartModel.fromJson(value.data);
+      print(value.data);
+      emit(AppDeleteCartDataSuccessState());
+      getCartData();
+
+      //emit(AppGetCartDataLoadingState());
+    }).catchError((error) {
+      print('error:${error.toString()}');
+      emit(AppDeleteCartDataFailureState());
+    });
+  }
+
+  int cartQuantity = 0;
+
+  void incrementQuantity() {
+    cartQuantity++;
+  }
+
+  void decrementQuantity() {
+    if (cartQuantity > 0) {
+      cartQuantity--;
+    } else {
+      cartQuantity = 0;
+    }
   }
 }

@@ -64,7 +64,8 @@ class MyApp extends StatelessWidget {
             ..getHomeData()
             ..getCategoriesData()
             ..getFavoritesData()
-            ..getUserData(),
+            ..getUserData()
+            ..getCartData(),
           child: BlocConsumer<AppCubit, AppState>(
             listener: (context, state) {},
             builder: (context, state) {

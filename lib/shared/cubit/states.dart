@@ -37,3 +37,27 @@ class AppUpdateProfileLoadingState extends AppState {}
 class AppUpdateProfileSuccessState extends AppState {}
 
 class AppUpdateProfileFailureState extends AppState {}
+
+class AppGetProductDetailsLoadingState extends AppState {}
+
+class AppGetProductDetailsSuccessState extends AppState {}
+
+class AppGetProductDetailsFailureState extends AppState {}
+
+class AppAddToCartLoadingState extends AppState {}
+
+class AppAddToCartSuccessState extends AppState {}
+
+class AppAddToCartFailureState extends AppState {}
+
+class AppGetCartDataLoadingState extends AppState {}
+
+class AppGetCartDataSuccessState extends AppState {}
+
+class AppGetCartDataFailureState extends AppState {}
+
+class AppDeleteCartDataLoadingState extends AppState {}
+
+class AppDeleteCartDataSuccessState extends AppState {}
+
+class AppDeleteCartDataFailureState extends AppState {}
