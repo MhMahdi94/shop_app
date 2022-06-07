@@ -1,3 +1,6 @@
+import 'package:shop_app/models/home_model.dart';
+import 'package:shop_app/models/product_detaild_model.dart';
+
 abstract class AppState {}
 
 class AppInitialState extends AppState {}
@@ -40,7 +43,11 @@ class AppUpdateProfileFailureState extends AppState {}
 
 class AppGetProductDetailsLoadingState extends AppState {}
 
-class AppGetProductDetailsSuccessState extends AppState {}
+class AppGetProductDetailsSuccessState extends AppState {
+  final ProductDetailsModel? productDetailsModel;
+
+  AppGetProductDetailsSuccessState(this.productDetailsModel);
+}
 
 class AppGetProductDetailsFailureState extends AppState {}
 
@@ -65,3 +72,9 @@ class AppDeleteCartDataFailureState extends AppState {}
 class AppCartQuantityIncrementState extends AppState {}
 
 class AppCartQuantityDecrementState extends AppState {}
+
+class AppGetCategoryDetailsLoadingState extends AppState {}
+
+class AppGetCategoryDetailsSuccessState extends AppState {}
+
+class AppGetCategoryDetailsFailureState extends AppState {}

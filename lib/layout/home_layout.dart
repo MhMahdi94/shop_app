@@ -27,24 +27,29 @@ class HomeLayout extends StatelessWidget {
             title: Text('Shop App'),
             actions: [
               IconButton(
+                padding: EdgeInsets.zero,
                 onPressed: () {
                   navigateTo(context, SearchScreen());
                 },
                 icon: Icon(
                   Icons.search_outlined,
                   size: 22.sp,
+                  color: Colors.black45,
                 ),
               ),
               Stack(
                 alignment: Alignment.topRight,
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      navigateTo(context, CartsScreen());
-                    },
-                    icon: Icon(
-                      Icons.shopping_cart_outlined,
-                      size: 22.sp,
+                  Center(
+                    child: IconButton(
+                      onPressed: () {
+                        navigateTo(context, CartsScreen());
+                      },
+                      icon: Icon(
+                        Icons.shopping_cart_outlined,
+                        size: 22.sp,
+                        color: Colors.black45,
+                      ),
                     ),
                   ),
                   Container(

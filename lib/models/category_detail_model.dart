@@ -13,18 +13,18 @@ class CategoryDetailsModel {
 }
 
 class CategoryDetailData {
-  int? currentPage;
+  dynamic currentPage;
   List<CategoryDetailProductData>? data;
   String? firstPageUrl;
-  int? from;
-  int? lastPage;
+  dynamic from;
+  dynamic lastPage;
   String? lastPageUrl;
   //Null? nextPageUrl;
   String? path;
-  int? perPage;
+  dynamic perPage;
   // Null? prevPageUrl;
-  int? to;
-  int? total;
+  dynamic to;
+  dynamic total;
 
   CategoryDetailData.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
@@ -49,9 +49,9 @@ class CategoryDetailData {
 
 class CategoryDetailProductData {
   int? id;
-  double? price;
-  double? oldPrice;
-  int? discount;
+  dynamic price;
+  dynamic oldPrice;
+  dynamic discount;
   String? image;
   String? name;
   String? description;

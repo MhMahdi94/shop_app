@@ -28,174 +28,251 @@ class CartsScreen extends StatelessWidget {
                 ),
             ],
           ),
-          body: //state is AppGetCartDataLoadingState
-              // ignore: prefer_const_constructors
-              //? Center(child: CircularProgressIndicator())
-              //:
-              ListView.separated(
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.all(8.r),
-                child: Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.r),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black45,
-                            ),
-                          ),
-                          child: Image(
-                            image: NetworkImage(
-                              cubit.cartModel!.data!.cartItems![index].product!
-                                  .image!,
-                            ),
-                            width: 80.w,
-                            height: 80.h,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Expanded(
-                          child: Column(
+          body: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: ListView.separated(
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.all(8.r),
+                      child: Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.r),
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                cubit.cartModel!.data!.cartItems![index]
-                                    .product!.name!,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black45,
+                                  ),
+                                ),
+                                child: Image(
+                                  image: NetworkImage(
+                                    cubit.cartModel!.data!.cartItems![index]
+                                        .product!.image!,
+                                  ),
+                                  width: 80.w,
+                                  height: 80.h,
                                 ),
                               ),
                               SizedBox(
-                                height: 8.h,
+                                width: 8.w,
                               ),
-                              Row(
-                                children: [
-                                  Text(
-                                    cubit.cartModel!.data!.cartItems![index]
-                                        .product!.price!
-                                        .toString(),
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 4.w,
-                                  ),
-                                  if (cubit.cartModel!.data!.cartItems![index]
-                                          .product!.discount !=
-                                      null)
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
                                     Text(
                                       cubit.cartModel!.data!.cartItems![index]
-                                          .product!.oldPrice!
-                                          .toString(),
-                                      style: TextStyle(
-                                        fontSize: 10.sp,
-                                        fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.lineThrough,
-                                      ),
-                                    ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 16.h,
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: mainColor,
-                                    ),
-                                    width: 20.w,
-                                    height: 20.h,
-                                    child: Center(
-                                      child: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        onPressed: () {
-                                          cubit.decrementQuantity();
-                                        },
-                                        icon: Icon(
-                                          Icons.remove,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.all(8.r),
-                                    child: Text(
-                                      '${cubit.cartQuantity}',
+                                          .product!.name!,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: mainColor,
+                                    SizedBox(
+                                      height: 8.h,
                                     ),
-                                    width: 20.w,
-                                    height: 20.h,
-                                    child: Center(
-                                      child: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        onPressed: () {
-                                          cubit.incrementQuantity();
-                                        },
-                                        icon: Icon(
-                                          Icons.add,
-                                          color: Colors.white,
+                                    Row(
+                                      children: [
+                                        Text(
+                                          cubit.cartModel!.data!
+                                              .cartItems![index].product!.price!
+                                              .toString(),
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
+                                        SizedBox(
+                                          width: 4.w,
+                                        ),
+                                        if (cubit
+                                                .cartModel!
+                                                .data!
+                                                .cartItems![index]
+                                                .product!
+                                                .discount !=
+                                            null)
+                                          Text(
+                                            cubit
+                                                .cartModel!
+                                                .data!
+                                                .cartItems![index]
+                                                .product!
+                                                .oldPrice!
+                                                .toString(),
+                                            style: TextStyle(
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.bold,
+                                              decoration:
+                                                  TextDecoration.lineThrough,
+                                            ),
+                                          ),
+                                      ],
                                     ),
-                                  ),
-                                  Spacer(),
-                                  Expanded(
-                                    child: defaultTextButton(
-                                      onPressed: () {
-                                        cubit.deleteFromCart(cubit.cartModel!
-                                            .data!.cartItems![index].id!);
-                                      },
-                                      label: 'DELETE',
+                                    SizedBox(
+                                      height: 16.h,
                                     ),
-                                  ),
-                                ],
+                                    Row(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: mainColor,
+                                          ),
+                                          width: 20.w,
+                                          height: 20.h,
+                                          child: Center(
+                                            child: IconButton(
+                                              padding: EdgeInsets.zero,
+                                              onPressed: () {
+                                                cubit.decrementQuantity();
+                                              },
+                                              icon: Icon(
+                                                Icons.remove,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(8.r),
+                                          child: Text(
+                                            '${cubit.cartQuantity}',
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: mainColor,
+                                          ),
+                                          width: 20.w,
+                                          height: 20.h,
+                                          child: Center(
+                                            child: IconButton(
+                                              padding: EdgeInsets.zero,
+                                              onPressed: () {
+                                                cubit.incrementQuantity();
+                                              },
+                                              icon: Icon(
+                                                Icons.add,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Expanded(
+                                          child: defaultTextButton(
+                                            onPressed: () {
+                                              cubit.deleteFromCart(cubit
+                                                  .cartModel!
+                                                  .data!
+                                                  .cartItems![index]
+                                                  .id!);
+                                            },
+                                            label: 'DELETE',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      ],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) => Divider(),
+                  itemCount: cubit.cartModel!.data!.cartItems!.length,
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(32.r),
+                  child: Card(
+                    elevation: 5,
+                    child: Padding(
+                      padding: EdgeInsets.all(8.r),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Total:',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                '${cubit.cartModel!.data!.total} \$',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 8.h,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'SubTotal:',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                '${cubit.cartModel!.data!.subTotal} \$',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              );
-            },
-            separatorBuilder: (context, index) => Divider(),
-            itemCount: cubit.cartModel!.data!.cartItems!.length,
-          ),
-          floatingActionButton: FloatingActionButton.extended(
-            icon: Icon(Icons.shopping_cart),
-            label: Text(
-              'Order Now',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
               ),
-            ),
-            onPressed: () {},
+            ],
           ),
+          floatingActionButton: cubit.cartModel!.data!.cartItems!.length == 0
+              ? null
+              : FloatingActionButton.extended(
+                  icon: Icon(Icons.shopping_cart),
+                  label: Text(
+                    'Order Now',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
         );
       },
       listener: (context, state) {

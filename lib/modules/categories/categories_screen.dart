@@ -1,8 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shop_app/models/category_model.dart';
+import 'package:shop_app/modules/category_details/category_details_screen.dart';
 import 'package:shop_app/shared/colors.dart';
+import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/cubit/cubit.dart';
 import 'package:shop_app/shared/cubit/states.dart';
 
@@ -30,32 +34,21 @@ class CategoriesScreen extends StatelessWidget {
                   .categoryModel!
                   .data!
                   .data
-                  .map((p) => buildCategoryItem(p))
+                  .map((p) => buildCategoryItem(p, context))
                   .toList(),
             ),
           ),
-          // GridView.builder(
-          //   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          //     maxCrossAxisExtent: screenWidth / 2,
-          //     childAspectRatio: 1 / 2,
-          //     mainAxisSpacing: 10.h,
-          //     crossAxisSpacing: 10.w,
-
-          //   ),
-
-          //   itemBuilder: (context, index) => buildCategoryItem(
-          //       AppCubit.get(context).categoryModel!.data!.data[index]),
-          //   physics: BouncingScrollPhysics(),
-          //   shrinkWrap: true,
-          // ),
         );
       },
       listener: (context, state) {},
     );
   }
 
-  Widget buildCategoryItem(DataModel? model) => InkWell(
-        onTap: () {},
+  Widget buildCategoryItem(DataModel? model, context) => InkWell(
+        onTap: () {
+          AppCubit.get(context).getCategoryDetails(model!.id!);
+          navigateTo(context, CategoryDetailsScreen());
+        },
         child: Card(
           elevation: 5,
           child: Column(

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/models/cart_model.dart';
+import 'package:shop_app/models/category_detail_model.dart';
 import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/change_favourites_model.dart';
 import 'package:shop_app/models/favourites_model.dart';
@@ -11,8 +12,10 @@ import 'package:shop_app/models/login_model.dart';
 import 'package:shop_app/models/product_detaild_model.dart';
 import 'package:shop_app/modules/categories/categories_screen.dart';
 import 'package:shop_app/modules/favourites/favourites.dart';
+import 'package:shop_app/modules/product_details/product_details.dart';
 import 'package:shop_app/modules/products/products_screen.dart';
 import 'package:shop_app/modules/settings/settings_screen.dart';
+import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/constants.dart';
 import 'package:shop_app/shared/cubit/states.dart';
 import 'package:shop_app/shared/network/end_points.dart';
@@ -82,6 +85,22 @@ class AppCubit extends Cubit<AppState> {
     }).catchError((error) {
       print('error:${error.toString()}');
       emit(AppHomeCategoriesFailureState());
+    });
+  }
+
+  CategoryDetailsModel? categoryDetailsModel;
+  void getCategoryDetails(int categoryId) {
+    emit(AppGetCategoryDetailsLoadingState());
+
+    DioHelper.getData(
+      url: '$GET_CATEGORIES/$categoryId',
+    ).then((value) {
+      categoryDetailsModel = CategoryDetailsModel.fromJson(value.data);
+      //print(value.data);
+      emit(AppGetCategoryDetailsSuccessState());
+    }).catchError((error) {
+      print('error:${error.toString()}');
+      emit(AppGetCategoryDetailsFailureState());
     });
   }
 
@@ -171,15 +190,18 @@ class AppCubit extends Cubit<AppState> {
   }
 
   ProductDetailsModel? productDetailsModel;
-  void getProductDetailsData(int id) {
+  void getProductDetailsData(int id, context) {
+    productDetailsModel = null;
     emit(AppGetProductDetailsLoadingState());
+    navigateTo(context, ProductDetailsScreen());
     DioHelper.getData(
       url: '$GET_PRODUCT$id',
       token: token,
     ).then((value) {
       productDetailsModel = ProductDetailsModel.fromJson(value.data);
-      print(value.data);
-      emit(AppGetProductDetailsSuccessState());
+
+      emit(AppGetProductDetailsSuccessState(productDetailsModel));
+      //print(value.data);
     }).catchError((error) {
       print('error:${error.toString()}');
       emit(AppGetProductDetailsFailureState());

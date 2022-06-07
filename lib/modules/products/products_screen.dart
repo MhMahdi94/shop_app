@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/home_model.dart';
+import 'package:shop_app/modules/category_details/category_details_screen.dart';
 import 'package:shop_app/modules/product_details/product_details.dart';
 import 'package:shop_app/shared/colors.dart';
 import 'package:shop_app/shared/components/components.dart';
@@ -23,7 +24,18 @@ class ProductsScreen extends StatelessWidget {
         AppCubit cubit = AppCubit.get(context);
         return Scaffold(
           body: cubit.homeModel != null
-              ? productsBuilder(cubit.homeModel, cubit.categoryModel, context)
+              ? Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    productsBuilder(
+                      cubit.homeModel,
+                      cubit.categoryModel,
+                      context,
+                    ),
+                    if (state is AppAddToCartLoadingState)
+                      LinearProgressIndicator(),
+                  ],
+                )
               : Center(
                   child: CircularProgressIndicator(),
                 ),
@@ -58,7 +70,8 @@ class ProductsScreen extends StatelessWidget {
     );
   }
 
-  Widget productsBuilder(HomeModel? model, CategoryModel? catModel, context) =>
+  Widget productsBuilder(HomeModel? model, CategoryModel? catModel, context,
+          {bool? isLoading = false}) =>
       Container(
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -110,7 +123,9 @@ class ProductsScreen extends StatelessWidget {
                       child: ListView.separated(
                         physics: BouncingScrollPhysics(),
                         itemBuilder: (context, index) => buildHomeCategoryItem(
+                          context,
                           title: catModel!.data!.data[index].name.toString(),
+                          id: catModel.data!.data[index].id,
                         ),
                         scrollDirection: Axis.horizontal,
                         separatorBuilder: (context, index) => SizedBox(
@@ -163,8 +178,8 @@ class ProductsScreen extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                AppCubit.get(context).getProductDetailsData(model.id!);
-                navigateTo(context, ProductDetailsScreen());
+                AppCubit.get(context).getProductDetailsData(model.id!, context);
+                //navigateTo(context, ProductDetailsScreen());
               },
               child: Stack(
                 alignment: Alignment.bottomLeft,
@@ -262,6 +277,9 @@ class ProductsScreen extends StatelessWidget {
                           )),
                     ],
                   ),
+                  SizedBox(
+                    height: 12.h,
+                  ),
                   defaultButton(
                     function: () {
                       AppCubit.get(context).addToCart(model.id!);
@@ -276,8 +294,13 @@ class ProductsScreen extends StatelessWidget {
         ),
       );
 
-  Widget buildHomeCategoryItem({required String title}) => InkWell(
-        onTap: () {},
+  Widget buildHomeCategoryItem(BuildContext context,
+          {required String title, int? id}) =>
+      InkWell(
+        onTap: () {
+          AppCubit.get(context).getCategoryDetails(id!);
+          navigateTo(context, CategoryDetailsScreen());
+        },
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.r),
