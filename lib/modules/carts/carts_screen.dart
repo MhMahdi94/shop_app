@@ -134,7 +134,7 @@ class CartsScreen extends StatelessWidget {
                                   Padding(
                                     padding: EdgeInsets.all(8.r),
                                     child: Text(
-                                      cubit.cartQuantity.toString(),
+                                      '${cubit.cartQuantity}',
                                       style: TextStyle(
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.bold,

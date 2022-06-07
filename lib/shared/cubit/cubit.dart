@@ -239,17 +239,19 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
-  int cartQuantity = 0;
+  int? cartQuantity = 0;
 
   void incrementQuantity() {
-    cartQuantity++;
+    cartQuantity = cartQuantity! + 1;
+    emit(AppCartQuantityIncrementState());
   }
 
   void decrementQuantity() {
-    if (cartQuantity > 0) {
-      cartQuantity--;
+    if (cartQuantity! > 0) {
+      cartQuantity = cartQuantity! - 1;
     } else {
       cartQuantity = 0;
     }
+    emit(AppCartQuantityDecrementState());
   }
 }

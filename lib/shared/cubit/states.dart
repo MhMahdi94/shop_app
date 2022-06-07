@@ -61,3 +61,7 @@ class AppDeleteCartDataLoadingState extends AppState {}
 class AppDeleteCartDataSuccessState extends AppState {}
 
 class AppDeleteCartDataFailureState extends AppState {}
+
+class AppCartQuantityIncrementState extends AppState {}
+
+class AppCartQuantityDecrementState extends AppState {}

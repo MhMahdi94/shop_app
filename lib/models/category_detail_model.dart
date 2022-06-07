@@ -1,20 +1,20 @@
 class CategoryDetailsModel {
   bool? status;
-  Null? message;
-  Data? data;
-
-  CategoryDetailsModel({this.status, this.message, this.data});
+  //Null? message;
+  CategoryDetailData? data;
 
   CategoryDetailsModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    //  message = json['message'];
+    data = json['data'] != null
+        ? new CategoryDetailData.fromJson(json['data'])
+        : null;
   }
 }
 
-class Data {
+class CategoryDetailData {
   int? currentPage;
-  List<Data>? data;
+  List<CategoryDetailProductData>? data;
   String? firstPageUrl;
   int? from;
   int? lastPage;
@@ -26,12 +26,12 @@ class Data {
   int? to;
   int? total;
 
-  Data.fromJson(Map<String, dynamic> json) {
+  CategoryDetailData.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <CategoryDetailProductData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new CategoryDetailProductData.fromJson(v));
       });
     }
     firstPageUrl = json['first_page_url'];
@@ -47,7 +47,7 @@ class Data {
   }
 }
 
-class CategoryDetailData {
+class CategoryDetailProductData {
   int? id;
   double? price;
   double? oldPrice;
@@ -59,7 +59,7 @@ class CategoryDetailData {
   bool? inFavorites;
   bool? inCart;
 
-  CategoryDetailData.fromJson(Map<String, dynamic> json) {
+  CategoryDetailProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     price = json['price'];
     oldPrice = json['old_price'];
