@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/models/login_model.dart';
 import 'package:shop_app/modules/login/cubit/states.dart';
+import 'package:shop_app/shared/constants.dart';
 import 'package:shop_app/shared/network/end_points.dart';
 import 'package:shop_app/shared/network/remote/dio_helper.dart';
 
@@ -18,7 +19,7 @@ class AppLoginCubit extends Cubit<AppLoginStates> {
     ).then((value) {
       print(value.data);
       loginModel = LoginModel.fromJson(value.data);
-
+      //token = loginModel!.data!.token;
       emit(AppLoginSuccessState(loginModel!));
     }).catchError((error) {
       print('error: ${error.toString()}');

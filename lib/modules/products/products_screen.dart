@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,22 +24,24 @@ class ProductsScreen extends StatelessWidget {
       builder: (context, state) {
         AppCubit cubit = AppCubit.get(context);
         return Scaffold(
-          body: cubit.homeModel != null
-              ? Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    productsBuilder(
-                      cubit.homeModel,
-                      cubit.categoryModel,
-                      context,
-                    ),
-                    if (state is AppAddToCartLoadingState)
-                      LinearProgressIndicator(),
-                  ],
-                )
-              : Center(
-                  child: CircularProgressIndicator(),
+          body: ConditionalBuilder(
+            condition: cubit.homeModel != null,
+            builder: (context) => Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                productsBuilder(
+                  cubit.homeModel,
+                  cubit.categoryModel,
+                  context,
                 ),
+                if (state is AppAddToCartLoadingState)
+                  LinearProgressIndicator(),
+              ],
+            ),
+            fallback: (context) => Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
         );
       },
       listener: (context, state) {

@@ -10,3 +10,5 @@ const UPDATE_PROFILE = 'update-profile';
 const SEARCH = 'products/search';
 const GET_PRODUCT = 'products/';
 const CARTS = 'carts';
+const ADDRESSES = 'addresses';
+const ORDERS = 'orders';

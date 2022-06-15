@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shop_app/modules/address/address_screen.dart';
 import 'package:shop_app/shared/colors.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/cubit/cubit.dart';
@@ -19,17 +20,11 @@ class CartsScreen extends StatelessWidget {
         AppCubit cubit = AppCubit.get(context);
         //print(cubit.cartModel!.data!.cartItems![0]);
         return Scaffold(
-          appBar: AppBar(
-            actions: [
-              if (state is AppGetCartDataLoadingState)
-                Padding(
-                  padding: EdgeInsets.all(8.sp),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-            ],
-          ),
+          appBar: AppBar(),
           body: Column(
             children: [
+              if (state is AppGetCartDataLoadingState)
+                Center(child: LinearProgressIndicator()),
               Expanded(
                 flex: 3,
                 child: ListView.separated(
@@ -271,7 +266,9 @@ class CartsScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    navigateTo(context, AddressFormScreen());
+                  },
                 ),
         );
       },

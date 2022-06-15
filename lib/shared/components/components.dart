@@ -94,9 +94,9 @@ Widget defaultTextButton({
     TextButton(
       onPressed: onPressed,
       child: Text(
-        label,
+        label.toUpperCase(),
         style: TextStyle(
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
           fontSize: 12.sp,
         ),
       ),

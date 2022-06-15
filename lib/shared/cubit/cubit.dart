@@ -1,14 +1,18 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unnecessary_brace_in_string_interps
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/models/address_model.dart';
 import 'package:shop_app/models/cart_model.dart';
 import 'package:shop_app/models/category_detail_model.dart';
 import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/change_favourites_model.dart';
 import 'package:shop_app/models/favourites_model.dart';
+import 'package:shop_app/models/get_adressess_model.dart';
 import 'package:shop_app/models/home_model.dart';
 import 'package:shop_app/models/login_model.dart';
+import 'package:shop_app/models/order_model.dart';
+import 'package:shop_app/models/orders_model.dart';
 import 'package:shop_app/models/product_detaild_model.dart';
 import 'package:shop_app/modules/categories/categories_screen.dart';
 import 'package:shop_app/modules/favourites/favourites.dart';
@@ -148,6 +152,7 @@ class AppCubit extends Cubit<AppState> {
   }
 
   UserData? userModel;
+
   void getUserData() {
     emit(AppGetProfileLoadingState());
 
@@ -228,6 +233,7 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
+  int cartCount = 0;
   void getCartData() {
     emit(AppGetCartDataLoadingState());
     DioHelper.getData(
@@ -235,8 +241,10 @@ class AppCubit extends Cubit<AppState> {
       token: token,
     ).then((value) {
       cartModel = CartModel.fromJson(value.data);
-      //print(value.data);
+      print(value.data);
       emit(AppGetCartDataSuccessState());
+      cartCount = cartModel!.data!.cartItems!.length;
+      emit(AppChangeCartCountState());
     }).catchError((error) {
       print('error:${error.toString()}');
       emit(AppGetCartDataFailureState());
@@ -275,5 +283,157 @@ class AppCubit extends Cubit<AppState> {
       cartQuantity = 0;
     }
     emit(AppCartQuantityDecrementState());
+  }
+
+  AddressModel? addressModel;
+  void postAddress({
+    required String? name,
+    required String? city,
+    required String? region,
+    required String? details,
+    required String? notes,
+    required String? latitude,
+    required String? longitude,
+  }) {
+    emit(AppCreateAddressLoadingState());
+    DioHelper.postData(
+      url: ADDRESSES,
+      token: token,
+      data: {
+        'name': name,
+        'city': city,
+        'region': region,
+        'details': details,
+        'notes': notes,
+        'latitude': latitude,
+        'longitude': longitude,
+      },
+    ).then(
+      (value) {
+        //printFullText(value.data);
+        addressModel = AddressModel.fromJson(value.data);
+        //print('data: ${data}');
+        emit(AppCreateAddressSuccessState());
+      },
+    ).catchError(
+      (error) {
+        print('error:${error.toString()}');
+        emit(AppCreateAddressFailureState());
+      },
+    );
+  }
+
+  GetAddressesModel? getAddressesModel;
+  void getAddresses() {
+    emit(AppGetAddressesLoadingState());
+    DioHelper.getData(
+      url: ADDRESSES,
+      token: token,
+    ).then((value) {
+      getAddressesModel = GetAddressesModel.fromJson(value.data);
+      print(value.data);
+      emit(AppGetAddressesSuccessState());
+    }).catchError((error) {
+      print('error:${error.toString()}');
+      emit(AppGetAddressesFailureState());
+    });
+  }
+
+  void deleteAddress(int addressId) {
+    emit(AppDeleteAddressLoadingState());
+    DioHelper.deleteData(
+      url: '$ADDRESSES/$addressId',
+      token: token,
+    ).then((value) {
+      //getAddressesModel = GetAddressesModel.fromJson(value.data);
+      print(value.data);
+      emit(AppDeleteAddressSuccessState());
+      getAddresses();
+    }).catchError((error) {
+      print('error:${error.toString()}');
+      emit(AppDeleteAddressFailureState());
+    });
+  }
+
+  int listIndex = 0;
+  void changeListIndex(int index) {
+    listIndex = index;
+    emit(AppChangeListIndexState());
+  }
+
+  bool isForm = true;
+  void changeIsForm(bool value) {
+    isForm = value;
+    emit(AppChangeisFormState());
+  }
+
+  int paymentMethod = 0;
+  void selectPaymentMethod(int id) {
+    paymentMethod = id;
+    emit(AppSelectPaymentMethod());
+  }
+
+  OrderModel? orderModel;
+  void postOrder({required int address_id, required int payment_method}) {
+    emit(AppAddOrderLoadingState());
+    DioHelper.postData(
+      url: ORDERS,
+      token: token,
+      data: {
+        'address_id': address_id,
+        'payment_method': payment_method,
+        'use_points': false,
+      },
+    ).then(
+      (value) {
+        //printFullText(value.data);
+        orderModel = OrderModel.fromJson(value.data);
+        print('data: ${value.data}');
+        emit(AppAddOrderSuccessState(orderModel));
+      },
+    ).catchError(
+      (error) {
+        print('error:${error.toString()}');
+        emit(AppAddOrderFailureState());
+      },
+    );
+  }
+
+  OrdersModel? ordersModel;
+  void getOrders() {
+    emit(AppGetOrdersLoadingState());
+    DioHelper.getData(
+      url: ORDERS,
+      token: token,
+    ).then((value) {
+      ordersModel = OrdersModel.fromJson(value.data);
+      print(value.data);
+      emit(AppGetOrdersSuccessState());
+    }).catchError((error) {
+      print('error:${error.toString()}');
+      emit(AppGetOrdersFailureState());
+    });
+  }
+
+  bool isLoading = false;
+  void changeIsLoading(bool value) {
+    isLoading = value;
+    emit(AppisLoadingState());
+  }
+
+  void cancelOrder(int id) {
+    emit(AppCancelOrderLoadingState());
+    DioHelper.getData(
+      url: '${ORDERS}/${id}/cancel',
+      token: token,
+    ).then((value) {
+      // ordersModel = OrdersModel.fromJson(value.data);
+      // print(value.data);
+      emit(AppCancelOrderSuccessState());
+      getOrders();
+    }).catchError((error) {
+      print('error:${error.toString()}');
+      emit(AppCancelOrderFailureState());
+    });
   }
 }

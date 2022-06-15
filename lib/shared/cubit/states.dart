@@ -1,4 +1,5 @@
 import 'package:shop_app/models/home_model.dart';
+import 'package:shop_app/models/order_model.dart';
 import 'package:shop_app/models/product_detaild_model.dart';
 
 abstract class AppState {}
@@ -7,7 +8,17 @@ class AppInitialState extends AppState {}
 
 class AppChangeBottomNavTab extends AppState {}
 
+class AppSelectPaymentMethod extends AppState {}
+
+class AppChangeListIndexState extends AppState {}
+
+class AppChangeisFormState extends AppState {}
+
+class AppChangeCartCountState extends AppState {}
+
 class AppHomeLoadingState extends AppState {}
+
+class AppisLoadingState extends AppState {}
 
 class AppHomeSuccessState extends AppState {}
 
@@ -78,3 +89,43 @@ class AppGetCategoryDetailsLoadingState extends AppState {}
 class AppGetCategoryDetailsSuccessState extends AppState {}
 
 class AppGetCategoryDetailsFailureState extends AppState {}
+
+class AppCreateAddressLoadingState extends AppState {}
+
+class AppCreateAddressSuccessState extends AppState {}
+
+class AppCreateAddressFailureState extends AppState {}
+
+class AppGetAddressesLoadingState extends AppState {}
+
+class AppGetAddressesSuccessState extends AppState {}
+
+class AppGetAddressesFailureState extends AppState {}
+
+class AppDeleteAddressLoadingState extends AppState {}
+
+class AppDeleteAddressSuccessState extends AppState {}
+
+class AppDeleteAddressFailureState extends AppState {}
+
+class AppAddOrderLoadingState extends AppState {}
+
+class AppAddOrderSuccessState extends AppState {
+  final OrderModel? orderModel;
+
+  AppAddOrderSuccessState(this.orderModel);
+}
+
+class AppAddOrderFailureState extends AppState {}
+
+class AppGetOrdersLoadingState extends AppState {}
+
+class AppGetOrdersSuccessState extends AppState {}
+
+class AppGetOrdersFailureState extends AppState {}
+
+class AppCancelOrderLoadingState extends AppState {}
+
+class AppCancelOrderSuccessState extends AppState {}
+
+class AppCancelOrderFailureState extends AppState {}
